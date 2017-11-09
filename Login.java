@@ -7,7 +7,7 @@ package manipals;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-
+import java.sql.*;
 /**
  *
  * @author rahul
@@ -63,6 +63,11 @@ public class Login extends javax.swing.JFrame {
         });
 
         jButton2.setText("Register");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("About us");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -148,7 +153,36 @@ public class Login extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        try
+        {
+        Class.forName("com.mysql.jdbc.Driver");
+        Connection con=(Connection)DriverManager.getConnection("jdbc:mysql://localhost:3306/manipals","root","03Rishab");
+        Statement stmt=con.createStatement();
+        int reg=Integer.parseInt(jTextField2.getText());
+        ResultSet rs = stmt.executeQuery("select password from personal where regno = "+reg);
+        String pass=rs.getString("password");
+        if(pass.equals(jPasswordField2.getText()))
+        {
+            JOptionPane.showMessageDialog(new JFrame(),"Valid Password");
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(new JFrame(),"Invalid Password");
+        }
+        }
+        catch(Exception e)
+        {
+            System.out.println(e.getMessage());
+            JOptionPane.showMessageDialog(new JFrame(),"Fail");
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        Register obj=new Register();
+        obj.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
